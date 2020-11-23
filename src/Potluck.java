@@ -6,7 +6,8 @@ import javax.swing.border.*;
 public class Potluck extends JFrame implements ActionListener{
 
     JPanel panel;
-    JPanel innerPanel;
+    JPanel buttonPanel;
+
     JLabel label;
     JButton bombButton1;
     JButton bombButton2;
@@ -21,7 +22,6 @@ public class Potluck extends JFrame implements ActionListener{
     int column;
 
     public Potluck(int row, int column){
-
         setTitle("POTLUCK");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 500, 500);
@@ -31,17 +31,16 @@ public class Potluck extends JFrame implements ActionListener{
         this.column = column;
 
         panel = new JPanel();
-        innerPanel = new JPanel();
-        label = new JLabel("Number of tries:" + count);
+        buttonPanel = new JPanel();
+        label = new JLabel("Number of tries:" + count + "\n");
         label.setHorizontalAlignment(SwingConstants.CENTER);
 
 
-        innerPanel.add(label,BorderLayout.NORTH);
-        innerPanel.setBorder(new EmptyBorder(row, row, column, column));
-        panel.setLayout(new GridLayout(row,column,row*2,column*2));
-        panel.setLayout(new BorderLayout(0, 0));
-        innerPanel.add(panel, BorderLayout.CENTER);
-        setContentPane(innerPanel);
+        panel.add(label,BorderLayout.LINE_START);
+        panel.setBorder(new EmptyBorder(row, row, column, column));
+        buttonPanel.setLayout(new GridLayout(row*2,column*2));
+        buttonPanel.add(panel, BorderLayout.CENTER);
+        setContentPane(buttonPanel);
 
         //choose bombs and prize randomly
         while (prize == bomb1 ||  prize == bomb2 ||bomb1 == bomb2){
@@ -51,26 +50,26 @@ public class Potluck extends JFrame implements ActionListener{
         }
 
         //create buttons
-        for(int i = 0; i< row * column; i++){
+        for(int i = 1; i< row * column + 1; i++){
             if(i == prize){
-                prizeButton = new JButton();
+                prizeButton = new JButton("Pot " + i);
                 prizeButton.addActionListener(this);
-                innerPanel.add(prizeButton);
+                buttonPanel.add(prizeButton);
             }
             else if(i == bomb1){
-                bombButton1= new JButton();
+                bombButton1= new JButton("Pot " + i);
                 bombButton1.addActionListener(this);
-                innerPanel.add(bombButton1);
+                buttonPanel.add(bombButton1);
             }
             else if(i == bomb2){
-                bombButton2 = new JButton();
+                bombButton2 = new JButton("Pot " + i);
                 bombButton2.addActionListener(this);
-                innerPanel.add(bombButton2);
+                buttonPanel.add(bombButton2);
             }
             else{
-                JButton button = new JButton();
+                JButton button = new JButton("Pot " + i);
                 button.addActionListener(this);
-                innerPanel.add(button);
+                buttonPanel.add(button);
             }
         }
     }
@@ -80,18 +79,18 @@ public class Potluck extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent event) {
         if(event.getSource() == prizeButton) {
             count++;
-            label.setText("Prize found in " + count + " tries!");
+            label.setText("Prize found in " + count + " tries!" + "\n");
             for (int i = 0; i < (row * column); i++) {
-                if (panel.getComponent(i) != prizeButton)
-                    ((JButton) panel.getComponent(i)).setEnabled(false);
+                if (buttonPanel.getComponent(i) != prizeButton)
+                    ((JButton) buttonPanel.getComponent(i)).setEnabled(false);
             }
         }
         else if(event.getSource() == bombButton1 || event.getSource() == bombButton2 ){
             count ++;
-            label.setText("Sorry! You are blown up at attempt " + count);
+            label.setText("Sorry! You are blown up at attempt " + count + "\n");
             for (int i = 0; i < (row * column); i++) {
-                if (panel.getComponent(i) != prizeButton || panel.getComponent(i) != bombButton1 || panel.getComponent(i) != bombButton2 )
-                    ((JButton) panel.getComponent(i)).setEnabled(false);
+                if (buttonPanel.getComponent(i) != prizeButton || buttonPanel.getComponent(i) != bombButton1 || buttonPanel.getComponent(i) != bombButton2 )
+                    ((JButton) buttonPanel.getComponent(i)).setEnabled(false);
             }
         }
         else{
