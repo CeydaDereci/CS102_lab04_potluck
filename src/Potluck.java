@@ -32,25 +32,29 @@ public class Potluck extends JFrame implements ActionListener{
 
         panel = new JPanel();
         buttonPanel = new JPanel();
+
         label = new JLabel("Number of tries:" + count + "\n");
-        label.setHorizontalAlignment(SwingConstants.CENTER);
 
 
-        panel.add(label,BorderLayout.LINE_START);
-        panel.setBorder(new EmptyBorder(row, row, column, column));
-        buttonPanel.setLayout(new GridLayout(row*2,column*2));
-        buttonPanel.add(panel, BorderLayout.CENTER);
-        setContentPane(buttonPanel);
+
+
+        panel.setBorder(new EmptyBorder(row*2, column*2, row*2, column*2));
+        panel.add(label,BorderLayout.CENTER);
+        panel.setBackground(Color.pink);
+
+        buttonPanel.setLayout(new GridLayout(row,column));
+        add(panel, BorderLayout.NORTH);
+        add(buttonPanel, BorderLayout.CENTER);
 
         //choose bombs and prize randomly
         while (prize == bomb1 ||  prize == bomb2 ||bomb1 == bomb2){
-            prize = (int)(Math.random()*(row * column));
-            bomb1 = (int)(Math.random()*(row * column));
-            bomb2 = (int)(Math.random()*(row * column));
+            prize = (int)(Math.random()*(row * column - 1 ))+ 1;
+            bomb1 = (int)(Math.random()*(row * column - 1 )) + 1;
+            bomb2 = (int)(Math.random()*(row * column - 1)) + 1;
         }
 
         //create buttons
-        for(int i = 1; i< row * column + 1; i++){
+        for(int i = 1; i < row * column  + 1 ; i++){
             if(i == prize){
                 prizeButton = new JButton("Pot " + i);
                 prizeButton.addActionListener(this);
